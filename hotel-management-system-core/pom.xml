@@ -54,6 +54,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.marriott</groupId>
+            <artifactId>hotel-management-system-commons</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jdbc</artifactId>
             <version>8.0.22</version>
