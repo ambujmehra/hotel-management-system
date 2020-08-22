@@ -27,6 +27,6 @@ public enum RoomType {
     /**
      * Suite room type.
      */
-    SUITE;
+    SUITE
 
 }

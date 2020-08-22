@@ -20,5 +20,5 @@ public enum RoomStatus {
     /**
      * Occupied room status.
      */
-    OCCUPIED;
+    OCCUPIED
 }

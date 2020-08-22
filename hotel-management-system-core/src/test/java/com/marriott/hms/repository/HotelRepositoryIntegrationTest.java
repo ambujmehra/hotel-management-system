@@ -1,13 +1,11 @@
-package com.marriott.hms;
+package com.marriott.hms.repository;
 
 import com.marriott.hms.model.Hotel;
-import com.marriott.hms.repository.HotelRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
@@ -16,14 +14,17 @@ import java.math.BigDecimal;
 @DataJpaTest
 public class HotelRepositoryIntegrationTest {
 
-    @Autowired
-    private TestEntityManager entityManager;
 
     @Autowired
     private HotelRepository hotelRepository;
 
     @Test
-    public void whenFindByNameReturnHotel() {
+    public void injectedComponentsAreNotNull() {
+        Assert.assertNotNull(hotelRepository);
+    }
+
+    @Test
+    public void testInsertHotelEntity() {
         Hotel hotel = Hotel.builder()
                 .city("Delhi")
                 .address("street 10, park avenue")
@@ -31,11 +32,21 @@ public class HotelRepositoryIntegrationTest {
                 .pinCode("!22011")
                 .rating(BigDecimal.valueOf(4.3))
                 .build();
-        entityManager.persist(hotel);
-        entityManager.flush();
-
+        hotelRepository.save(hotel);
         Hotel expectedHotel = hotelRepository.findByHotelName(hotel.getHotelName());
-
         Assert.assertEquals(expectedHotel.getHotelName(), hotel.getHotelName());
     }
+
+    @Test
+    public void testFindByHotelName() {
+        Hotel expectedHotel = hotelRepository.findByHotelName("Marriott rosymary");
+        Assert.assertEquals(expectedHotel.getHotelName(), "Marriott rosymary");
+    }
+
+    @Test
+    public void testNoOfRoomsAvailableInAHotel() {
+        Hotel expectedHotel = hotelRepository.findByHotelName("Marriott rosymary");
+        Assert.assertEquals(expectedHotel.getRooms().size(), 2);
+    }
+
 }

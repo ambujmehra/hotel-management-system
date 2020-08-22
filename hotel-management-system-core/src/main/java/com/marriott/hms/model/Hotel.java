@@ -22,6 +22,7 @@ public class Hotel extends BaseModel {
     @Column(name = "address", nullable = false)
     private String address;
 
+    // ideally this should be a seperate Table
     @Column(name = "city", nullable = false)
     private String city;
 
@@ -31,7 +32,7 @@ public class Hotel extends BaseModel {
     @Column(name = "rating", nullable = false)
     private BigDecimal rating;
 
-    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Room> rooms;
 
 }

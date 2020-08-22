@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 public class Room extends BaseModel {
 
     @Column(name = "room_type", nullable = false)
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private RoomType roomType;
 
     @Column(name = "room_tariff", nullable = false)
@@ -31,7 +31,7 @@ public class Room extends BaseModel {
     private Integer occupancy;
 
     @Column(name = "room_status", nullable = false)
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private RoomStatus roomStatus;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
