@@ -1,4 +1,4 @@
-package com.mariott.hms.enums;
+package com.marriott.hms.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

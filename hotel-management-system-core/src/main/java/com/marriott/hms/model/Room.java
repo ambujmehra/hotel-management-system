@@ -1,7 +1,7 @@
 package com.marriott.hms.model;
 
-import com.mariott.hms.enums.RoomStatus;
-import com.mariott.hms.enums.RoomType;
+import com.marriott.hms.enums.RoomStatus;
+import com.marriott.hms.enums.RoomType;
 import com.marriott.hms.model.base.BaseModel;
 import lombok.*;
 

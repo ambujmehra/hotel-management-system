@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "hotels")
 public class Hotel extends BaseModel {
 
-    @Column(name = "hotel_name", nullable = false)
+    @Column(name = "hotel_name", nullable = false, unique = true)
     private String hotelName;
 
     @Column(name = "address", nullable = false)

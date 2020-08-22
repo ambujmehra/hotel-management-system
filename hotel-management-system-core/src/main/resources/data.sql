@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS rooms;
 
 CREATE TABLE hotels (
     id INTEGER AUTO_INCREMENT  PRIMARY KEY,
-    hotel_name VARCHAR(255) NOT NULL,
+    hotel_name VARCHAR(255) UNIQUE NOT NULL ,
     address VARCHAR(255) NOT NULL,
     city VARCHAR(64) NOT NULL,
     pincode VARCHAR(64) NOT NULL,
