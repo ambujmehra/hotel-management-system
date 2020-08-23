@@ -37,6 +37,15 @@ public class HotelServiceImpl implements IHotelService {
 
     @Override
     public HotelDto findById(Integer id) {
-        return null;
+        Hotel hotel = hotelRepository.findById(id).get();
+        Optional.ofNullable(hotel).orElseThrow(() -> new HotelManagementSystemException("Hotel not found"));
+        return HotelDto.builder()
+                .id(hotel.getId())
+                .address(hotel.getAddress())
+                .city(hotel.getCity())
+                .hotelName(hotel.getHotelName())
+                .pinCode(hotel.getPinCode())
+                .rating(hotel.getRating())
+                .build();
     }
 }
