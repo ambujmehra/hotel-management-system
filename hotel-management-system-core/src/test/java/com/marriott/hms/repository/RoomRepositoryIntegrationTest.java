@@ -15,7 +15,7 @@ public class RoomRepositoryIntegrationTest {
     private RoomRepository roomRepository;
 
     @Test
-    public void testALlInjectsNotNull() {
+    public void testAllInjectsNotNull() {
         Assert.assertNotNull(roomRepository);
     }
 
