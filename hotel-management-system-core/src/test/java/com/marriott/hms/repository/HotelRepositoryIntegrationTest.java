@@ -2,7 +2,9 @@ package com.marriott.hms.repository;
 
 import com.marriott.hms.model.Hotel;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -13,7 +15,6 @@ import java.math.BigDecimal;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class HotelRepositoryIntegrationTest {
-
 
     @Autowired
     private HotelRepository hotelRepository;
@@ -49,4 +50,11 @@ public class HotelRepositoryIntegrationTest {
         Assert.assertEquals(expectedHotel.getRooms().size(), 2);
     }
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
+    @Test
+    public void testNullHotelFindByName() {
+        hotelRepository.findByHotelName("Marriott rosymary1");
+    }
 }

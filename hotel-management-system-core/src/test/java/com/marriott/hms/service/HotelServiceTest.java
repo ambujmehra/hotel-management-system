@@ -42,7 +42,6 @@ public class HotelServiceTest {
                 .pinCode("!22011")
                 .rating(BigDecimal.valueOf(4.3))
                 .build();
-
         Mockito.when(hotelRepository.findByHotelName(hotel.getHotelName()))
                 .thenReturn(hotel);
     }
@@ -52,6 +51,17 @@ public class HotelServiceTest {
         HotelDto expectedHotelDto = hotelService.findByHotelName("Courtyard Mariott");
         Assert.assertNotNull(expectedHotelDto);
         Assert.assertEquals(expectedHotelDto.getHotelName(), "Courtyard Mariott");
+    }
+
+    @Test
+    public void testNullHotelException() {
+        try {
+            hotelService.findByHotelName("Courtyard Mariott1");
+        } catch (Exception exception) {
+            Assert.assertEquals(exception.getMessage(), "Hotel not found");
+        }
+
+
     }
 
 }
