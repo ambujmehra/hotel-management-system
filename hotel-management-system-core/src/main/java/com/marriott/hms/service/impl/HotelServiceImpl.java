@@ -13,58 +13,52 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * The type Hotel service.
+ */
 @Service
 public class HotelServiceImpl implements IHotelService {
 
     @Autowired
     private HotelRepository hotelRepository;
 
+    @Autowired
+    private HotelMapper hotelMapper;
+
+    @Autowired
+    private RoomMapper roomMapper;
+
     @Override
     public HotelDto createHotel(HotelDto hotelDto) {
-        return null;
+        Hotel hotel = Hotel.builder()
+                .rating(hotelDto.getRating())
+                .pinCode(hotelDto.getPinCode())
+                .hotelName(hotelDto.getHotelName())
+                .city(hotelDto.getCity())
+                .address(hotelDto.getAddress())
+                .build();
+        return hotelMapper.map(hotelRepository.save(hotel));
     }
 
     @Override
     public HotelDto findByHotelName(String hotelName) {
         Hotel hotel = hotelRepository.findByHotelName(hotelName);
         Optional.ofNullable(hotel).orElseThrow(() -> new HotelManagementSystemException("Hotel not found"));
-        return HotelDto.builder()
-                .id(hotel.getId())
-                .address(hotel.getAddress())
-                .city(hotel.getCity())
-                .hotelName(hotel.getHotelName())
-                .pinCode(hotel.getPinCode())
-                .rating(hotel.getRating())
-                .build();
+        return hotelMapper.map(hotel);
     }
 
     @Override
     public HotelDto findById(Integer id) {
         Hotel hotel = hotelRepository.findById(id).orElse(null);
         Optional.ofNullable(hotel).orElseThrow(() -> new HotelManagementSystemException("Hotel not found"));
-        return HotelDto.builder()
-                .id(hotel.getId())
-                .address(hotel.getAddress())
-                .city(hotel.getCity())
-                .hotelName(hotel.getHotelName())
-                .pinCode(hotel.getPinCode())
-                .rating(hotel.getRating())
-                .build();
+        return hotelMapper.map(hotel);
     }
 
     @Override
     public List<RoomDto> getRoomsByHotelId(Integer hotelId) {
         Hotel hotel = hotelRepository.findById(hotelId).orElse(null);
         Optional.ofNullable(hotel).orElseThrow(() -> new HotelManagementSystemException("Hotel not found"));
-        return hotel.getRooms().stream().map(room -> RoomDto.builder()
-                .id(room.getId())
-                .occupancy(room.getOccupancy())
-                .roomSize(room.getRoomSize())
-                .roomStatus(room.getRoomStatus())
-                .roomTariff(room.getRoomTariff())
-                .roomType(room.getRoomType())
-                .build())
-                .collect(Collectors.toList());
+        return hotel.getRooms().stream().map(room -> roomMapper.map(room)).collect(Collectors.toList());
     }
 
 }

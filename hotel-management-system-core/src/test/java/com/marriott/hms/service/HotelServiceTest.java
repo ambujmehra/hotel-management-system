@@ -8,7 +8,9 @@ import com.marriott.hms.exception.HotelManagementSystemException;
 import com.marriott.hms.model.Hotel;
 import com.marriott.hms.model.Room;
 import com.marriott.hms.repository.HotelRepository;
+import com.marriott.hms.service.impl.HotelMapper;
 import com.marriott.hms.service.impl.HotelServiceImpl;
+import com.marriott.hms.service.impl.RoomMapper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +35,16 @@ public class HotelServiceTest {
         public IHotelService hotelService() {
             return new HotelServiceImpl();
         }
+
+        @Bean
+        public HotelMapper hotelMapper() {
+            return new HotelMapper();
+        }
+
+        @Bean
+        public RoomMapper roomMapper() {
+            return new RoomMapper();
+        }
     }
     @Autowired
     private HotelServiceImpl hotelService;
@@ -42,8 +54,7 @@ public class HotelServiceTest {
 
     @Before
     public void setUp() {
-        Hotel hotel = Hotel.builder()
-                .city("Delhi")
+        Hotel hotel = Hotel.builder().city("Delhi")
                 .address("street 10, park avenue")
                 .hotelName("Courtyard Mariott")
                 .pinCode("!22011")
@@ -59,6 +70,7 @@ public class HotelServiceTest {
                 .roomTariff(BigDecimal.valueOf(1020))
                 .roomType(RoomType.DOUBLE_OCCUPANCY_ROOM)
                 .build();
+
         room.setId(1);
         List<Room> rooms = new ArrayList<>();
         rooms.add(room);
@@ -66,6 +78,8 @@ public class HotelServiceTest {
         Mockito.when(hotelRepository.findByHotelName(hotel.getHotelName()))
                 .thenReturn(hotel);
         Mockito.when(hotelRepository.findById(hotel.getId())).thenReturn(java.util.Optional.of(hotel));
+        Mockito.when(hotelRepository.save(Mockito.any(Hotel.class)))
+                .thenAnswer(i -> i.getArguments()[0]);
     }
 
     @Test
@@ -107,6 +121,21 @@ public class HotelServiceTest {
         } catch (HotelManagementSystemException exception) {
             Assert.assertEquals(exception.getMessage(), "Hotel not found");
         }
+    }
+
+    @Test
+    public void testHotelCreate() {
+        HotelDto hotelDto = HotelDto.builder()
+                .rating(BigDecimal.valueOf(4.1))
+                .pinCode("122011")
+                .hotelName("JW marriott")
+                .address("Park avenue")
+                .city("Bangalore")
+                .build();
+        HotelDto expectedHotelDto = hotelService.createHotel(hotelDto);
+        Assert.assertNotNull(expectedHotelDto);
+        Assert.assertEquals(expectedHotelDto.getHotelName(), hotelDto.getHotelName());
+
     }
 
 }
