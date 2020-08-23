@@ -1,4 +1,4 @@
-package com.marriott.hms.service.impl;
+package com.marriott.hms.service.impl.mapper;
 
 import com.marriott.hms.dto.RoomDto;
 import com.marriott.hms.model.Room;

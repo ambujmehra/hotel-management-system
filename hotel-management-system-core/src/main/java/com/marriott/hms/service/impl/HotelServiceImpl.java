@@ -6,6 +6,8 @@ import com.marriott.hms.exception.HotelManagementSystemException;
 import com.marriott.hms.model.Hotel;
 import com.marriott.hms.repository.HotelRepository;
 import com.marriott.hms.service.IHotelService;
+import com.marriott.hms.service.impl.mapper.HotelMapper;
+import com.marriott.hms.service.impl.mapper.RoomMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
