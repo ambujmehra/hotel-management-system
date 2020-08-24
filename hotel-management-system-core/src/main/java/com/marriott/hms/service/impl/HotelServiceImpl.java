@@ -2,8 +2,11 @@ package com.marriott.hms.service.impl;
 
 import com.marriott.hms.dto.HotelDto;
 import com.marriott.hms.dto.RoomDto;
+import com.marriott.hms.enums.RoomStatus;
+import com.marriott.hms.enums.RoomType;
 import com.marriott.hms.exception.HotelManagementSystemException;
 import com.marriott.hms.model.Hotel;
+import com.marriott.hms.model.Room;
 import com.marriott.hms.repository.HotelRepository;
 import com.marriott.hms.service.IHotelService;
 import com.marriott.hms.service.impl.mapper.HotelMapper;
@@ -62,5 +65,28 @@ public class HotelServiceImpl implements IHotelService {
         Optional.ofNullable(hotel).orElseThrow(() -> new HotelManagementSystemException("Hotel not found"));
         return hotel.getRooms().stream().map(room -> roomMapper.map(room)).collect(Collectors.toList());
     }
+
+    @Override
+    public List<RoomDto> addRoomToAHotel(Integer hotelId, RoomDto roomDto) {
+        Hotel hotel = hotelRepository.findById(hotelId).orElse(null);
+        Optional.ofNullable(hotel).orElseThrow(() -> new HotelManagementSystemException("Hotel not found"));
+        Room addRoom = Room.builder()
+                .roomType(roomDto.getRoomType())
+                .roomTariff(roomDto.getRoomTariff())
+                .roomStatus(roomDto.getRoomStatus())
+                .roomSize(roomDto.getRoomSize())
+                .occupancy(roomDto.getOccupancy())
+                .hotel(hotel)
+                .build();
+        hotel.getRooms().add(addRoom);
+        hotelRepository.save(hotel);
+        return hotel.getRooms().stream().map(room -> roomMapper.map(room)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RoomDto> getRoombyHotelIdAndRoomTypeAndStatus(Integer hotelId, RoomStatus roomStatus, RoomType roomType) {
+        return null;
+    }
+
 
 }

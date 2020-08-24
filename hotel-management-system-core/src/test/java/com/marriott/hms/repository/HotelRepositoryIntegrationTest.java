@@ -1,6 +1,9 @@
 package com.marriott.hms.repository;
 
+import com.marriott.hms.enums.RoomStatus;
+import com.marriott.hms.enums.RoomType;
 import com.marriott.hms.model.Hotel;
+import com.marriott.hms.model.Room;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +39,7 @@ public class HotelRepositoryIntegrationTest {
         Assert.assertEquals(expectedHotel.getHotelName(), hotel.getHotelName());
     }
 
+
     @Test
     public void testFindByHotelName() {
         Hotel expectedHotel = hotelRepository.findByHotelName("Marriott rosymary");
@@ -52,5 +56,23 @@ public class HotelRepositoryIntegrationTest {
     @Test
     public void testNullHotelFindByName() {
         hotelRepository.findByHotelName("Marriott rosymary1");
+    }
+
+    @Test
+    public void testInsertRoomoAHotel() {
+        Hotel expectedHotel = hotelRepository.findByHotelName("Marriott rosymary");
+        Assert.assertEquals(expectedHotel.getHotelName(), "Marriott rosymary");
+        Room addRoom = Room.builder()
+                .roomType(RoomType.DOUBLE_OCCUPANCY_ROOM)
+                .roomTariff(BigDecimal.TEN)
+                .roomStatus(RoomStatus.EMPTY)
+                .roomSize(109)
+                .occupancy(2)
+                .hotel(expectedHotel)
+                .build();
+
+        expectedHotel.getRooms().add(addRoom);
+        Hotel updatedHotel = hotelRepository.save(expectedHotel);
+        Assert.assertEquals(updatedHotel.getRooms().size(), 4);
     }
 }

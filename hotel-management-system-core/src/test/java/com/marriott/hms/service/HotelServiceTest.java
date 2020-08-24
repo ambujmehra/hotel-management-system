@@ -72,6 +72,7 @@ public class HotelServiceTest {
                 .build();
 
         room.setId(1);
+
         List<Room> rooms = new ArrayList<>();
         rooms.add(room);
         hotel.setRooms(rooms);
@@ -136,6 +137,23 @@ public class HotelServiceTest {
         Assert.assertNotNull(expectedHotelDto);
         Assert.assertEquals(expectedHotelDto.getHotelName(), hotelDto.getHotelName());
 
+    }
+
+    @Test
+    public void addRoomToAHotelTest() {
+        Integer hotelId = 1;
+        RoomDto addRoom  = RoomDto.builder()
+                .occupancy(1)
+                .roomSize(60)
+                .roomStatus(RoomStatus.EMPTY)
+                .roomTariff(BigDecimal.valueOf(510))
+                .roomType(RoomType.SINGLE_OCCUPANCY_ROOM)
+                .id(2)
+                .build();
+
+        List<RoomDto> roomDtos = hotelService.addRoomToAHotel(hotelId, addRoom);
+        Assert.assertNotNull(roomDtos);
+        Assert.assertEquals(roomDtos.size(), 2);
     }
 
 }
