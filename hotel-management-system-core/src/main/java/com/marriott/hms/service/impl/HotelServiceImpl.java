@@ -9,6 +9,7 @@ import com.marriott.hms.model.Hotel;
 import com.marriott.hms.model.Room;
 import com.marriott.hms.repository.HotelRepository;
 import com.marriott.hms.service.IHotelService;
+import com.marriott.hms.service.IRoomService;
 import com.marriott.hms.service.impl.mapper.HotelMapper;
 import com.marriott.hms.service.impl.mapper.RoomMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class HotelServiceImpl implements IHotelService {
 
     @Autowired
     private RoomMapper roomMapper;
+
+    @Autowired
+    private IRoomService roomService;
 
     @Override
     public HotelDto createHotel(HotelDto hotelDto) {
@@ -85,7 +89,17 @@ public class HotelServiceImpl implements IHotelService {
 
     @Override
     public List<RoomDto> getRoombyHotelIdAndRoomTypeAndStatus(Integer hotelId, RoomStatus roomStatus, RoomType roomType) {
-        return null;
+        Hotel hotel = hotelRepository.findById(hotelId).orElse(null);
+        Optional.ofNullable(hotel).orElseThrow(() -> new HotelManagementSystemException("Hotel not found"));
+        List<RoomDto> roomDtos;
+        if (roomStatus.equals(RoomStatus.ALL))
+            roomDtos = roomService.findRoomForHotelByRoomType(hotel, roomType);
+        else if(roomType.equals(RoomType.ALL))
+            roomDtos = roomService.findRoomForHotelByRoomStatus(hotel, roomStatus);
+        else
+            roomDtos = roomService.findRoomForHotelByRoomTypeAndRoomStatus(hotel, roomType, roomStatus);
+
+        return roomDtos;
     }
 
 
