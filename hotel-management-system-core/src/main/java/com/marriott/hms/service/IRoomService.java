@@ -42,4 +42,14 @@ public interface IRoomService {
      */
     List<RoomDto> findRoomForHotelByRoomStatus(Hotel hotel, RoomStatus roomStatus);
 
+
+    /**
+     * Find room for hotel and room id room dto.
+     *
+     * @param hotel  the hotel
+     * @param roomId the room id
+     * @return the room dto
+     */
+    RoomDto findRoomForHotelAndRoomId(Hotel hotel, Integer roomId);
+
 }

@@ -57,6 +57,9 @@ public class HotelServiceTest {
     @MockBean
     private IRoomService roomService;
 
+    @Autowired
+    private RoomMapper roomMapper;
+
     @Before
     public void setUp() {
         Hotel hotel = Hotel.builder().city("Delhi").address("street 10, park avenue").hotelName("Courtyard Mariott").pinCode("!22011").rating(BigDecimal.valueOf(4.3)).build();
@@ -85,6 +88,8 @@ public class HotelServiceTest {
         Mockito.when(roomService.findRoomForHotelByRoomType(hotel , RoomType.SUITE)).thenReturn(roomDto1);
 
         Mockito.when(roomService.findRoomForHotelByRoomTypeAndRoomStatus(hotel , RoomType.SUITE, RoomStatus.EMPTY)).thenReturn(roomDto1);
+
+        Mockito.when(roomService.findRoomForHotelAndRoomId(hotel, 2)).thenReturn(roomMapper.map(otherRoom));
 
     }
 
@@ -181,4 +186,37 @@ public class HotelServiceTest {
         Assert.assertNotNull(roomDtos);
         Assert.assertEquals(roomDtos.size(), 1);
     }
+
+
+    @Test
+    public void testGetRoomByHotelIdAndRoomId() {
+        RoomDto roomDto = hotelService.getRoomByHotelIdAndRoomId(1,2);
+        Assert.assertNotNull(roomDto);
+        Assert.assertEquals(roomDto.getRoomTariff(), BigDecimal.valueOf(1020));
+    }
+
+    @Test
+    public void testGetRoomByHotelIdAndRoomIdHotelNotFound() {
+        RoomDto roomDto;
+        try {
+            roomDto = hotelService.getRoomByHotelIdAndRoomId(10,2);
+        } catch (HotelManagementSystemException exception) {
+            Assert.assertEquals(exception.getMessage(), "Hotel not found");
+            return;
+        }
+        Assert.assertNotNull(roomDto);
+    }
+
+
+    @Test
+    public void testGetRoomByHotelIdAndRoomIdRoomNotFound() {
+        RoomDto roomDto = null;
+        try {
+            roomDto = hotelService.getRoomByHotelIdAndRoomId(1,20);
+        } catch (HotelManagementSystemException e) {
+            Assert.assertEquals(e.getMessage(), "room not found");
+        }
+        //Assert.assertNotNull(roomDto);
+    }
+
 }

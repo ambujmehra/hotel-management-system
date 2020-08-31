@@ -42,4 +42,14 @@ public interface RoomRepository extends CrudRepository<Room, Integer> {
      * @return the list
      */
     List<Room> findByHotelAndRoomStatusAndRoomType(Hotel hotel, RoomStatus roomStatus, RoomType roomType);
+
+
+    /**
+     * Find by hotel and room id room.
+     *
+     * @param hotel  the hotel
+     * @param roomId the room id
+     * @return the room
+     */
+    Room findByHotelAndId(Hotel hotel, Integer roomId);
 }

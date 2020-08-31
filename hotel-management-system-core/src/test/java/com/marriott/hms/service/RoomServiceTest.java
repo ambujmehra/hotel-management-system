@@ -3,6 +3,7 @@ package com.marriott.hms.service;
 import com.marriott.hms.dto.RoomDto;
 import com.marriott.hms.enums.RoomStatus;
 import com.marriott.hms.enums.RoomType;
+import com.marriott.hms.exception.HotelManagementSystemException;
 import com.marriott.hms.model.Hotel;
 import com.marriott.hms.model.Room;
 import com.marriott.hms.repository.RoomRepository;
@@ -79,6 +80,7 @@ public class RoomServiceTest {
         Mockito.when(roomRepository.findByHotelAndRoomStatus(hotel, RoomStatus.OCCUPIED)).thenReturn(occupiedAll);
         Mockito.when(roomRepository.findByHotelAndRoomType(hotel, RoomType.SUITE)).thenReturn(allSuite);
         Mockito.when(roomRepository.findByHotelAndRoomStatusAndRoomType(hotel, RoomStatus.OCCUPIED, RoomType.SUITE)).thenReturn(allSuite);
+        Mockito.when(roomRepository.findByHotelAndId(hotel, 2)).thenReturn(otherRoom);
 
 
     }
@@ -103,5 +105,25 @@ public class RoomServiceTest {
         List<RoomDto> roomDtos = roomService.findRoomForHotelByRoomTypeAndRoomStatus(hotel,  RoomType.SUITE, RoomStatus.OCCUPIED);
         Assert.assertNotNull(roomDtos);
         Assert.assertEquals(roomDtos.size(), 1);
+    }
+
+    @Test
+    public void testFindByHotelAndRoomId() {
+        RoomDto roomDto = roomService.findRoomForHotelAndRoomId(hotel, 2);
+        Assert.assertNotNull(roomDto);
+        Assert.assertEquals(roomDto.getRoomTariff(), BigDecimal.valueOf(1020));
+
+    }
+
+    @Test
+    public void testFindByHotelAndRoomIdRoomNotFound() {
+        RoomDto roomDto = null;
+        try {
+            roomDto = roomService.findRoomForHotelAndRoomId(hotel, 20);
+        } catch (HotelManagementSystemException e) {
+            Assert.assertEquals(e.getMessage(), "room not found");
+            return;
+        }
+        Assert.assertNotNull(roomDto);
     }
 }

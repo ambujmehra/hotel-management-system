@@ -1,6 +1,5 @@
 package com.marriott.hms.repository;
 
-import com.marriott.hms.dto.RoomDto;
 import com.marriott.hms.enums.RoomStatus;
 import com.marriott.hms.enums.RoomType;
 import com.marriott.hms.model.Hotel;
@@ -51,6 +50,14 @@ public class RoomRepositoryIntegrationTest {
         Assert.assertEquals(expectedHotel.getHotelName(), "Marriott rosymary");
         List<Room> expectedRoomDtos = roomRepository.findByHotelAndRoomStatusAndRoomType(expectedHotel, RoomStatus.EMPTY, RoomType.SINGLE_OCCUPANCY_ROOM);
         Assert.assertEquals(expectedRoomDtos.size(), 1);
+    }
+
+    @Test
+    public void testFindByHotelAndRoomId() {
+        Hotel expectedHotel = hotelRepository.findByHotelName("Marriott rosymary");
+        Assert.assertEquals(expectedHotel.getHotelName(), "Marriott rosymary");
+        Room room = roomRepository.findByHotelAndId(expectedHotel, 2);
+        Assert.assertEquals(room.getRoomType(), RoomType.DOUBLE_OCCUPANCY_ROOM);
     }
 
 }

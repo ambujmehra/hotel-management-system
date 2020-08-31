@@ -102,5 +102,12 @@ public class HotelServiceImpl implements IHotelService {
         return roomDtos;
     }
 
+    @Override
+    public RoomDto getRoomByHotelIdAndRoomId(Integer hotelId, Integer roomId) {
+        Hotel hotel = hotelRepository.findById(hotelId).orElse(null);
+        Optional.ofNullable(hotel).orElseThrow(() -> new HotelManagementSystemException("Hotel not found"));
+        return roomService.findRoomForHotelAndRoomId(hotel, roomId);
+    }
+
 
 }

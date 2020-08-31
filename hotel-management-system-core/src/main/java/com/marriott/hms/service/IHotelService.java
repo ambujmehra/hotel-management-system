@@ -64,5 +64,13 @@ public interface IHotelService {
      */
     List<RoomDto> getRoombyHotelIdAndRoomTypeAndStatus(Integer hotelId, RoomStatus roomStatus, RoomType roomType);
 
-    //List<RoomDto> getRoombyHotelIdAndRoomTypeAndStatusPaginated((Integer hotelId, RoomStatus roomStatus, RoomType roomType)
+
+    /**
+     * Gets room by hotel id and room id.
+     *
+     * @param hotelId the hotel id
+     * @param roomId  the room id
+     * @return the room by hotel id and room id
+     */
+    RoomDto getRoomByHotelIdAndRoomId(Integer hotelId, Integer roomId);
 }
