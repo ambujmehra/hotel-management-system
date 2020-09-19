@@ -55,6 +55,5 @@ public class RoomServiceImpl implements IRoomService {
         Optional.ofNullable(room).orElseThrow(() -> new HotelManagementSystemException("room not found"));
         return roomMapper.map(room);
     }
-
-
+    
 }
